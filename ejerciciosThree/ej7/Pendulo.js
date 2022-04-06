@@ -6,7 +6,6 @@ class Pendulos extends THREE.Object3D{
 
         this.createGUI(gui,titleGui);
 
-        var ejes = this.createAxis();
         this.pendulomini = this.createPenduloPequeño() ;
         this.pendulomovil = this.createPenduloMovil() ;
         this.pendulomaxi = this.createPenduloGrande() ;
@@ -25,7 +24,6 @@ class Pendulos extends THREE.Object3D{
         this.pendulocomp.add(this.pendulomaxi);
         this.pendulocomp.position.y = -4;
 
-        this.add(ejes);
         this.add(this.pendulum);
         this.add(this.pendulocomp);
         this.add(pivote);
@@ -36,6 +34,7 @@ class Pendulos extends THREE.Object3D{
     createGUI(gui,titleGui){
         this.guiControls = new function(){
             this.escala = 1.0 ;
+            this.escalaRojo = 1.0;
             this.posicion = 0.0 ;
             this.rotacionGrande = 0.0 ;
             this.rotacionPeque = 0.0 ;
@@ -102,7 +101,7 @@ class Pendulos extends THREE.Object3D{
     update(){
         this.pendulum.rotation.z = this.guiControls.rotacionPeque;
         this.rotation.z = this.guiControls.rotacionGrande;
-        this.pendulocomp.scale.y = this.guiControls.escala;
+        this.pendulomovil.scale.y = this.guiControls.escala;
         this.pendulocomp.position.y = -4*this.pendulocomp.scale.y;
         this.pendulum.position.y =  0.25*this.pendulocomp.position.y-this.guiControls.posicion * this.pendulocomp.children[0].geometry.parameters.height*this.pendulocomp.scale.y ;
         
