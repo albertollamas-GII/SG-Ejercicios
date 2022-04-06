@@ -6,6 +6,7 @@ class Pendulos extends THREE.Object3D{
 
         this.createGUI(gui,titleGui);
 
+        var ejes = this.createAxis();
         this.pendulomini = this.createPenduloPequeño() ;
         this.pendulomovil = this.createPenduloMovil() ;
         this.pendulomaxi = this.createPenduloGrande() ;
@@ -24,26 +25,35 @@ class Pendulos extends THREE.Object3D{
         this.pendulocomp.add(this.pendulomaxi);
         this.pendulocomp.position.y = -4;
 
+        this.add(ejes);
         this.add(this.pendulum);
         this.add(this.pendulocomp);
         this.add(pivote);
-        this.tope = true;
+        this.topepequeno = true;
+        this.topegrande = true ;
         
     }
 
     createGUI(gui,titleGui){
         this.guiControls = new function(){
             this.escala = 1.0 ;
-            this.escalaRojo = 1.0;
             this.posicion = 0.0 ;
             this.rotacionGrande = 0.0 ;
             this.rotacionPeque = 0.0 ;
+            this.velgiropeque = 0.0 ;
+            this.velgirogrande = 0.0 ;
+            this.girarpeque = false ;
+            this.girargrande = false ;
 
             this.reset = function(){
                 this.escala = 1.0 ;
                 this.posicion = 0.0 ;
                 this.rotacionGrande = 0.0 ;
                 this.rotacionPeque = 0.0 ;
+                this.velgiropeque = 0.0 ;
+                this.velgirogrande = 0.0 ;
+                this.girarpeque = false ;
+                this.girargrande = false ;
             }
 
         }
@@ -54,6 +64,11 @@ class Pendulos extends THREE.Object3D{
         folder.add(this.guiControls, 'rotacionGrande', -Math.PI/4,Math.PI/4,0.1).name('Rotación P.Grande : ').listen();
         folder.add(this.guiControls, 'rotacionPeque', -Math.PI/4,Math.PI/4,0.1).name('Rotación P.Mini : ').listen();
         folder.add (this.guiControls, 'reset').name ('[ Reset ]');
+        var subfolder = folder.addFolder('Animación');
+        subfolder.add(this.guiControls, 'velgiropeque', 0,Math.PI/8,0.1).name("Vel. PPeque : ").listen();
+        subfolder.add(this.guiControls, 'velgirogrande', 0,Math.PI/8,0.1).name("Vel. PGrande : ").listen();
+        subfolder.add(this.guiControls, 'girarpeque').name("Anim. peque : ").listen();
+        subfolder.add(this.guiControls, 'girargrande').name("Anim. grande : ").listen();
     }
 
     createPenduloPequeño(){
@@ -99,12 +114,30 @@ class Pendulos extends THREE.Object3D{
       }
 
     update(){
-        this.pendulum.rotation.z = this.guiControls.rotacionPeque;
+        if(this.guiControls.girargrande){
+            if(this.rotation.z >= Math.PI/2) this.topegrande = false;
+            if(this.rotation.z <= -Math.PI/2) this.topegrande = true;
+            if(this.topegrande)
+                this.rotation.z += this.guiControls.velgirogrande ;
+            else
+                this.rotation.z -= this.guiControls.velgirogrande ;
+        }
+        else
         this.rotation.z = this.guiControls.rotacionGrande;
-        this.pendulomovil.scale.y = this.guiControls.escala;
+        if(this.guiControls.girarpeque){
+            if(this.pendulum.rotation.z >= Math.PI/2) this.topepequeno = false;
+            if(this.pendulum.rotation.z <= -Math.PI/2) this.topepequeno = true;
+            if(this.topepequeno)
+                this.pendulum.rotation.z += this.guiControls.velgiropeque ;
+            else
+                this.pendulum.rotation.z -= this.guiControls.velgiropeque ;
+        }
+        else
+        this.pendulum.rotation.z = this.guiControls.rotacionPeque;
+
+        this.pendulocomp.scale.y = this.guiControls.escala;
         this.pendulocomp.position.y = -4*this.pendulocomp.scale.y;
         this.pendulum.position.y =  0.25*this.pendulocomp.position.y-this.guiControls.posicion * this.pendulocomp.children[0].geometry.parameters.height*this.pendulocomp.scale.y ;
-        
     }
 }
 

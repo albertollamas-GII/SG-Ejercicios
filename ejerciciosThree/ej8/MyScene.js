@@ -6,6 +6,8 @@ import { GUI } from '../libs/dat.gui.module.js'
 import { TrackballControls } from '../libs/TrackballControls.js'
 import { Stats } from '../libs/stats.module.js'
 import { GLTFLoader } from '../libs/GLTFLoader.js'
+import { Reloj } from './Reloj.js'
+import { Aguja } from './Aguja.js'
 
 // Clases de mi proyecto
 
@@ -38,7 +40,7 @@ class MyScene extends THREE.Scene {
     
     // Un suelo     
     // Y unos ejes. Imprescindibles para orientarnos sobre dónde están las cosa
-    
+    this.createGround();
     
     // Por último creamos el modelo.
     // El modelo puede incluir su parte de la interfaz gráfica de usuario. Le pasamos la referencia a 
@@ -46,6 +48,12 @@ class MyScene extends THREE.Scene {
 
     this.axis = new THREE.AxesHelper(5);
     this.add(this.axis);
+
+    this.model = new Reloj();
+    this.model1 = new Aguja(this.gui);
+    this.add(this.model);
+    this.add(this.model1);
+
    
 
   }
@@ -216,6 +224,7 @@ class MyScene extends THREE.Scene {
     this.cameraControl.update();
     
     // Se actualiza el resto del modelo
+    this.model1.update();
 
     // Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
     this.renderer.render (this, this.getCamera());
