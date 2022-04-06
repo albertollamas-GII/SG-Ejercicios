@@ -26,8 +26,9 @@ class Taza extends THREE.Object3D{
          cilindroDiferencia.translate(0,2,0);
         //Se crea el material
         var material = new THREE.MeshNormalMaterial();
+        var material2 = new THREE.MeshPhongMaterial({color:0x00ff00});
          //Se construyen los Meshes
-        var meshCilindroTaza = new THREE.Mesh(cilindroTaza,material);
+        var meshCilindroTaza = new THREE.Mesh(cilindroTaza,material2);
         var meshAsa = new THREE.Mesh(asaTaza,material);
         var meshCilindroInterior = new THREE.Mesh(cilindroDiferencia, material);
 
