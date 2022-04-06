@@ -6,6 +6,7 @@ import { GUI } from '../libs/dat.gui.module.js'
 import { TrackballControls } from '../libs/TrackballControls.js'
 import { Stats } from '../libs/stats.module.js'
 import { GLTFLoader } from '../libs/GLTFLoader.js'
+import { Pendulos } from './Pendulo.js'
 
 // Clases de mi proyecto
 
@@ -46,7 +47,9 @@ class MyScene extends THREE.Scene {
 
     this.axis = new THREE.AxesHelper(5);
     this.add(this.axis);
-   
+    
+    this.model = new Pendulos(this.gui,'Parametros de pendulo:');
+    this.add(this.model);
 
   }
   
@@ -214,7 +217,7 @@ class MyScene extends THREE.Scene {
     
     // Se actualiza la posición de la cámara según su controlador
     this.cameraControl.update();
-    
+    this.model.update();
     // Se actualiza el resto del modelo
 
     // Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
