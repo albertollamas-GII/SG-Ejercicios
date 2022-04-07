@@ -6,6 +6,8 @@ import { GUI } from '../libs/dat.gui.module.js'
 import { TrackballControls } from '../libs/TrackballControls.js'
 import { Stats } from '../libs/stats.module.js'
 import { GLTFLoader } from '../libs/GLTFLoader.js'
+import { Nave } from './Nave.js'
+import * as TWEEN from '../libs/tween.esm.js' 
 
 // Clases de mi proyecto
 
@@ -46,7 +48,9 @@ class MyScene extends THREE.Scene {
 
     this.axis = new THREE.AxesHelper(5);
     this.add(this.axis);
-   
+    
+    this.model = new Nave();
+    this.add(this.model);
 
   }
   
@@ -224,6 +228,8 @@ class MyScene extends THREE.Scene {
     // Literalmente le decimos al navegador: "La próxima vez que haya que refrescar la pantalla, llama al método que te indico".
     // Si no existiera esta línea,  update()  se ejecutaría solo la primera vez.
     requestAnimationFrame(() => this.update())
+
+    TWEEN.update();
   }
 }
 

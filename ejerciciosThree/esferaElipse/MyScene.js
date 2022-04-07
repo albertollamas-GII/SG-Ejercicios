@@ -6,12 +6,12 @@ import { GUI } from '../libs/dat.gui.module.js'
 import { TrackballControls } from '../libs/TrackballControls.js'
 import { Stats } from '../libs/stats.module.js'
 import { GLTFLoader } from '../libs/GLTFLoader.js'
-import { CSG } from '../libs/CSG-v2.js'
+import * as TWEEN from '../libs/tween.esm.js' 
+import { MyElipse } from './EsferaElipse.js'
 
 // Clases de mi proyecto
- import {Taza} from './Taza.js'
-import { Medio } from './cosaMedio.js'
-import { MyTuerca } from './MyTuerca.js'
+
+ 
 /// La clase fachada del modelo
 /**
  * Usaremos una clase derivada de la clase Scene de Three.js para llevar el control de la escena y de todo lo que ocurre en ella.
@@ -49,12 +49,8 @@ class MyScene extends THREE.Scene {
     this.axis = new THREE.AxesHelper(5);
     this.add(this.axis);
     
-    this.model1 = new Taza();
-    this.add(this.model1);
-    this.model2 = new Medio();
-    this.add(this.model2);
-    this.model3 = new MyTuerca(this.gui);
-    this.add(this.model3);
+    this.model = new MyElipse(this.gui);
+    this.add(this.model);
 
   }
   
@@ -231,7 +227,10 @@ class MyScene extends THREE.Scene {
     // Este método debe ser llamado cada vez que queramos visualizar la escena de nuevo.
     // Literalmente le decimos al navegador: "La próxima vez que haya que refrescar la pantalla, llama al método que te indico".
     // Si no existiera esta línea,  update()  se ejecutaría solo la primera vez.
-    requestAnimationFrame(() => this.update())
+    requestAnimationFrame(() => this.update());
+
+    TWEEN.update();
+
   }
 }
 
